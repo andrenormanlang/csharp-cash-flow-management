@@ -48,26 +48,40 @@ namespace CashFlowManagement.Views
             }
         }
 
-
         protected override async void OnClosing(CancelEventArgs e)
         {
-            try
-            {
-                await _viewModel.SaveDataAsync();
-            }
-            catch (Exception ex)
-            {
-                var result = MessageBox.Show(
-                    $"Error saving data: {ex.Message}\nDo you want to close anyway?",
-                    "Error",
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Warning);
+            var result = MessageBox.Show("Would you like to save your changes?",
+                                      "Save Changes",
+                                      MessageBoxButton.YesNoCancel,
+                                      MessageBoxImage.Question);
 
-                if (result == MessageBoxResult.No)
+            if (result == MessageBoxResult.Yes)
+            {
+                try
                 {
-                    e.Cancel = true;
+                    await _viewModel.SaveDataAsync();
+                }
+                catch (Exception ex)
+                {
+                    var errorResult = MessageBox.Show(
+                        $"Error saving data: {ex.Message}\nDo you want to close anyway?",
+                        "Error",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Warning);
+
+                    if (errorResult == MessageBoxResult.No)
+                    {
+                        e.Cancel = true;
+                        return;
+                    }
                 }
             }
+            else if (result == MessageBoxResult.Cancel)
+            {
+                e.Cancel = true;
+                return;
+            }
+
             base.OnClosing(e);
         }
     }

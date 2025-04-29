@@ -38,7 +38,7 @@ namespace CashFlowManagement.Services
                         PropertyNameCaseInsensitive = true
                     };
 
-                    var json = JsonSerializer.Serialize(transactions, options);
+                    var json = JsonSerializer.Serialize(transactions.ToList(), options);
                     await File.WriteAllTextAsync(_dataFile, json);
                 }
             }
@@ -46,6 +46,7 @@ namespace CashFlowManagement.Services
             {
                 MessageBox.Show($"Error saving data: {ex.Message}", "Error",
                     MessageBoxButton.OK, MessageBoxImage.Error);
+                throw;
             }
         }
 
@@ -65,47 +66,55 @@ namespace CashFlowManagement.Services
                     if (File.Exists(_dataFile))
                     {
                         var json = await File.ReadAllTextAsync(_dataFile);
+                        if (string.IsNullOrWhiteSpace(json))
+                        {
+                            return Enumerable.Empty<ITransaction>();
+                        }
+
                         var options = new JsonSerializerOptions
                         {
                             PropertyNameCaseInsensitive = true
                         };
 
-                        var jsonDocument = JsonDocument.Parse(json);
-                        var transactions = new List<Transaction>();
-
-                        foreach (var element in jsonDocument.RootElement.EnumerateArray())
+                        try
                         {
-                            var transaction = new Transaction
-                            {
-                                Date = element.GetProperty("Date").GetDateTime(),
-                                Amount = element.GetProperty("Amount").GetDecimal(),
-                                Description = element.GetProperty("Description").GetString() ?? string.Empty,
-                                Category = new Category
-                                {
-                                    Name = element.GetProperty("Category").GetProperty("Name").GetString() ?? string.Empty,
-                                    Type = (CategoryType)element.GetProperty("Category").GetProperty("Type").GetInt32(),
-                                    TransactionCategory = (TransactionCategory)element.GetProperty("Category").GetProperty("TransactionCategory").GetInt32()
-                                }
-                            };
-                            transactions.Add(transaction);
+                            var transactions = JsonSerializer.Deserialize<List<Transaction>>(json, options);
+                            return transactions ?? Enumerable.Empty<ITransaction>();
                         }
+                        catch
+                        {
+                            // Fallback to manual parsing if direct deserialization fails
+                            var jsonDocument = JsonDocument.Parse(json);
+                            var transactions = new List<ITransaction>();
 
-                        return transactions;
+                            foreach (var element in jsonDocument.RootElement.EnumerateArray())
+                            {
+                                var transaction = new Transaction
+                                {
+                                    Date = element.GetProperty("Date").GetDateTime(),
+                                    Amount = element.GetProperty("Amount").GetDecimal(),
+                                    Description = element.GetProperty("Description").GetString() ?? string.Empty,
+                                    Category = new Category
+                                    {
+                                        Name = element.GetProperty("Category").GetProperty("Name").GetString() ?? string.Empty,
+                                        Type = (CategoryType)element.GetProperty("Category").GetProperty("Type").GetInt32(),
+                                        TransactionCategory = (TransactionCategory)element.GetProperty("Category").GetProperty("TransactionCategory").GetInt32()
+                                    }
+                                };
+                                transactions.Add(transaction);
+                            }
+
+                            return transactions;
+                        }
                     }
                 }
-                return new List<ITransaction>();
-            }
-            catch (JsonException jex)
-            {
-                MessageBox.Show($"Error parsing JSON file: {jex.Message}", "JSON Error",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
-                return new List<ITransaction>();
+                return Enumerable.Empty<ITransaction>();
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error loading data: {ex.Message}", "Error",
                     MessageBoxButton.OK, MessageBoxImage.Error);
-                return new List<ITransaction>();
+                throw;
             }
         }
     }

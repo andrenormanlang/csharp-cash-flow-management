@@ -8,7 +8,7 @@ namespace CashFlowManagement.Services.Interfaces
         IEnumerable<ITransaction> GetTransactions();
         void AddTransaction(ITransaction transaction);
         (decimal revenues, decimal expenses, decimal netCashFlow) CalculateMonthlyFlow(DateTime month);
-        IEnumerable<ITransaction> FilterTransactions(string searchText = null,
-            DateTime? month = null, string category = null, CategoryType? type = null);
+        IEnumerable<ITransaction> FilterTransactions(string? searchText,
+            DateTime? month, string? category, CategoryType? type);
     }
 }

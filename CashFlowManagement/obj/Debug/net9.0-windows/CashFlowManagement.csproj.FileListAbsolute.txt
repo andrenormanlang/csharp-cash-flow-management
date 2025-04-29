@@ -19,3 +19,6 @@ C:\MAMP\htdocs\MAU\CSharp_II\A6\CashFlowManagement\CashFlowManagement\obj\Debug\
 C:\MAMP\htdocs\MAU\CSharp_II\A6\CashFlowManagement\CashFlowManagement\obj\Debug\net9.0-windows\Views\MainWindow.g.cs
 C:\MAMP\htdocs\MAU\CSharp_II\A6\CashFlowManagement\CashFlowManagement\obj\Debug\net9.0-windows\CashFlowManagement_MarkupCompile.lref
 C:\MAMP\htdocs\MAU\CSharp_II\A6\CashFlowManagement\CashFlowManagement\obj\Debug\net9.0-windows\GeneratedInternalTypeHelper.g.cs
+C:\MAMP\htdocs\MAU\CSharp_II\A6\CashFlowManagement\CashFlowManagement\obj\Debug\net9.0-windows\CashFlowManagement.sourcelink.json
+C:\MAMP\htdocs\MAU\CSharp_II\A6\CashFlowManagement\CashFlowManagement\obj\Debug\net9.0-windows\Views\ReportWindow.baml
+C:\MAMP\htdocs\MAU\CSharp_II\A6\CashFlowManagement\CashFlowManagement\obj\Debug\net9.0-windows\Views\ReportWindow.g.cs

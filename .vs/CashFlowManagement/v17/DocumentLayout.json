@@ -3,10 +3,6 @@
   "WorkspaceRootPath": "C:\\MAMP\\htdocs\\MAU\\CSharp_II\\A6\\CashFlowManagement\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{CDF80E2C-E61E-486F-8CDB-9DEF3097A55F}|CashFlowManagement\\CashFlowManagement.csproj|c:\\mamp\\htdocs\\mau\\csharp_ii\\a6\\cashflowmanagement\\cashflowmanagement\\views\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CDF80E2C-E61E-486F-8CDB-9DEF3097A55F}|CashFlowManagement\\CashFlowManagement.csproj|solutionrelative:cashflowmanagement\\views\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{CDF80E2C-E61E-486F-8CDB-9DEF3097A55F}|CashFlowManagement\\CashFlowManagement.csproj|c:\\mamp\\htdocs\\mau\\csharp_ii\\a6\\cashflowmanagement\\cashflowmanagement\\viewmodels\\mainviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{CDF80E2C-E61E-486F-8CDB-9DEF3097A55F}|CashFlowManagement\\CashFlowManagement.csproj|solutionrelative:cashflowmanagement\\viewmodels\\mainviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -63,19 +59,6 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "MainWindow.xaml.cs",
-              "DocumentMoniker": "C:\\MAMP\\htdocs\\MAU\\CSharp_II\\A6\\CashFlowManagement\\CashFlowManagement\\Views\\MainWindow.xaml.cs",
-              "RelativeDocumentMoniker": "CashFlowManagement\\Views\\MainWindow.xaml.cs",
-              "ToolTip": "C:\\MAMP\\htdocs\\MAU\\CSharp_II\\A6\\CashFlowManagement\\CashFlowManagement\\Views\\MainWindow.xaml.cs",
-              "RelativeToolTip": "CashFlowManagement\\Views\\MainWindow.xaml.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAADEAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-29T10:18:26.649Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
               "Title": "MainViewModel.cs",
               "DocumentMoniker": "C:\\MAMP\\htdocs\\MAU\\CSharp_II\\A6\\CashFlowManagement\\CashFlowManagement\\ViewModels\\MainViewModel.cs",
               "RelativeDocumentMoniker": "CashFlowManagement\\ViewModels\\MainViewModel.cs",
@@ -88,7 +71,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "DataService.cs",
               "DocumentMoniker": "C:\\MAMP\\htdocs\\MAU\\CSharp_II\\A6\\CashFlowManagement\\CashFlowManagement\\Services\\DataService.cs",
               "RelativeDocumentMoniker": "CashFlowManagement\\Services\\DataService.cs",
@@ -96,12 +79,11 @@
               "RelativeToolTip": "CashFlowManagement\\Services\\DataService.cs",
               "ViewState": "AgIAACgAAAAAAAAAAAAuwAUAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-29T09:17:33.534Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-29T09:17:33.534Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "ITransactionManager.cs",
               "DocumentMoniker": "C:\\MAMP\\htdocs\\MAU\\CSharp_II\\A6\\CashFlowManagement\\CashFlowManagement\\Services\\Interfaces\\ITransactionManager.cs",
               "RelativeDocumentMoniker": "CashFlowManagement\\Services\\Interfaces\\ITransactionManager.cs",
@@ -109,12 +91,11 @@
               "RelativeToolTip": "CashFlowManagement\\Services\\Interfaces\\ITransactionManager.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-29T09:17:29.426Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-29T09:17:29.426Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 3,
               "Title": "IDataService.cs",
               "DocumentMoniker": "C:\\MAMP\\htdocs\\MAU\\CSharp_II\\A6\\CashFlowManagement\\CashFlowManagement\\Services\\Interfaces\\IDataService.cs",
               "RelativeDocumentMoniker": "CashFlowManagement\\Services\\Interfaces\\IDataService.cs",
@@ -122,12 +103,11 @@
               "RelativeToolTip": "CashFlowManagement\\Services\\Interfaces\\IDataService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-29T09:17:25.906Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-29T09:17:25.906Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 4,
               "Title": "Category.cs",
               "DocumentMoniker": "C:\\MAMP\\htdocs\\MAU\\CSharp_II\\A6\\CashFlowManagement\\CashFlowManagement\\Models\\Category.cs",
               "RelativeDocumentMoniker": "CashFlowManagement\\Models\\Category.cs",
@@ -135,8 +115,7 @@
               "RelativeToolTip": "CashFlowManagement\\Models\\Category.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-29T09:16:44.896Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-29T09:16:44.896Z"
             }
           ]
         }

@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET9_0;NETCOREAPP
 C:\MAMP\htdocs\MAU\CSharp_II\A6\CashFlowManagement\CashFlowManagement\App.xaml
-1-1644662438
+2-855247070
 
-16-460090473
+181301337125
 200-423684338
-Views\MainWindow.xaml;
+Views\MainWindow.xaml;Views\ReportWindow.xaml;
 
 False
 

@@ -64,10 +64,10 @@
                           Margin="0,0,0,10">
                     <Grid Margin="5">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="90" />
+                            <ColumnDefinition Width="180" />
+                            <ColumnDefinition Width="90" />
+                            <ColumnDefinition Width="180" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -78,7 +78,8 @@
 
                         <Label Grid.Row="0"
                                Grid.Column="0"
-                               Content="Date:" />
+                               Content="Date:"
+                               VerticalAlignment="Center" />
                         <DatePicker Grid.Row="0"
                                     Grid.Column="1"
                                     SelectedDate="{Binding SelectedDate}"
@@ -86,7 +87,8 @@
 
                         <Label Grid.Row="0"
                                Grid.Column="2"
-                               Content="Amount:" />
+                               Content="Amount:"
+                               VerticalAlignment="Center" />
                         <TextBox Grid.Row="0"
                                  Grid.Column="3"
                                  Text="{Binding Amount, UpdateSourceTrigger=PropertyChanged}"
@@ -94,7 +96,8 @@
 
                         <Label Grid.Row="1"
                                Grid.Column="0"
-                               Content="Type:" />
+                               Content="Type:"
+                               VerticalAlignment="Center" />
                         <ComboBox Grid.Row="1"
                                   Grid.Column="1"
                                   SelectedItem="{Binding SelectedType}"
@@ -105,28 +108,20 @@
 
                         <Label Grid.Row="1"
                                Grid.Column="2"
-                               Content="Category:" />
+                               Content="Category:"
+                               VerticalAlignment="Center" />
                         <ComboBox Grid.Row="1"
                                   Grid.Column="3"
-                                  ItemsSource="{Binding ExpenseCategories}"
                                   SelectedItem="{Binding SelectedTransactionCategory}"
                                   Margin="5">
                             <ComboBox.Style>
                                 <Style TargetType="ComboBox">
                                     <Style.Triggers>
-                                        <DataTrigger Value="{x:Static enums:CategoryType.Expense}">
-                                            <DataTrigger.Binding>
-                                                <Binding Path="SelectedType" />
-                                            </DataTrigger.Binding>
-                                            <Setter Property="ItemsSource"
-                                                    Value="{Binding ExpenseCategories}" />
+                                        <DataTrigger Binding="{Binding SelectedType}" Value="{x:Static enums:CategoryType.Expense}">
+                                            <Setter Property="ItemsSource" Value="{Binding ExpenseCategories}" />
                                         </DataTrigger>
-                                        <DataTrigger Value="{x:Static enums:CategoryType.Revenue}">
-                                            <DataTrigger.Binding>
-                                                <Binding Path="SelectedType" />
-                                            </DataTrigger.Binding>
-                                            <Setter Property="ItemsSource"
-                                                    Value="{Binding RevenueCategories}" />
+                                        <DataTrigger Binding="{Binding SelectedType}" Value="{x:Static enums:CategoryType.Revenue}">
+                                            <Setter Property="ItemsSource" Value="{Binding RevenueCategories}" />
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -135,22 +130,68 @@
 
                         <Label Grid.Row="2"
                                Grid.Column="0"
-                               Content="Description:" />
+                               Content="Description:"
+                               VerticalAlignment="Top"
+                               Margin="0,8,0,0" />
                         <TextBox Grid.Row="2"
                                  Grid.Column="1"
                                  Grid.ColumnSpan="3"
                                  Text="{Binding Description}"
-                                 Margin="5" />
+                                 Margin="5"
+                                 Height="50"
+                                 TextWrapping="Wrap"
+                                 AcceptsReturn="True"
+                                 VerticalScrollBarVisibility="Auto" />
 
                         <Button Grid.Row="3"
                                 Grid.Column="1"
                                 Grid.ColumnSpan="2"
                                 Content="Add Transaction"
                                 Command="{Binding AddTransactionCommand}"
-                                Background="Green"
-                                Foreground="White"
-                                Padding="20,10"
-                                Margin="5" />
+                                Margin="5,15">
+                            <Button.Style>
+                                <Style TargetType="{x:Type Button}">
+                                    <Setter Property="Background" Value="#2E7D32"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                    <Setter Property="FontWeight" Value="Normal"/>
+                                    <Setter Property="Padding" Value="20,10"/>
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type Button}">
+                                                <Border x:Name="border" 
+                                                        Background="{TemplateBinding Background}"
+                                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                                        BorderThickness="{TemplateBinding BorderThickness}" 
+                                                        CornerRadius="4"
+                                                        SnapsToDevicePixels="true">
+                                                    <ContentPresenter x:Name="contentPresenter"
+                                                                    Focusable="False"
+                                                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                                    Margin="{TemplateBinding Padding}"
+                                                                    RecognizesAccessKey="True"
+                                                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="true">
+                                                        <Setter Property="Background" Value="#388E3C"/>
+                                                        <Setter Property="Cursor" Value="Hand"/>
+                                                    </Trigger>
+                                                    <Trigger Property="IsPressed" Value="true">
+                                                        <Setter Property="Background" Value="#1B5E20"/>
+                                                    </Trigger>
+                                                    <Trigger Property="IsEnabled" Value="false">
+                                                        <Setter Property="Background" Value="#CCCCCC"/>
+                                                        <Setter Property="Foreground" Value="#666666"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Button.Style>
+                        </Button>
                     </Grid>
                 </GroupBox>
 
@@ -159,48 +200,126 @@
                           Margin="0,10,0,0">
                     <Grid Margin="5">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="90" />
+                            <ColumnDefinition Width="180" />
+                            <ColumnDefinition Width="90" />
+                            <ColumnDefinition Width="180" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
                         <Label Grid.Column="0"
-                               Content="Search:" />
+                               Content="Search:"
+                               VerticalAlignment="Center" />
                         <TextBox Grid.Column="1"
                                  Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
                                  Margin="5" />
 
                         <Label Grid.Column="2"
-                               Content="Month:" />
-                        <DatePicker Grid.Column="3"
-                                    SelectedDate="{Binding FilterMonth}"
-                                    Margin="5" />
-
-                        <Label Grid.Row="1"
-                               Grid.Column="0"
-                               Content="Category:" />
-                        <ComboBox Grid.Row="1"
-                                  Grid.Column="1"
-                                  ItemsSource="{Binding Categories}"
-                                  SelectedItem="{Binding FilterCategory}"
-                                  Margin="5" />
-
-                        <Label Grid.Row="1"
-                               Grid.Column="2"
-                               Content="Type:" />
-                        <ComboBox Grid.Row="1"
-                                  Grid.Column="3"
+                               Content="Type:"
+                               VerticalAlignment="Center" />
+                        <ComboBox Grid.Column="3"
                                   SelectedItem="{Binding FilterType}"
                                   Margin="5">
                             <ComboBoxItem Content="All" />
                             <ComboBoxItem Content="{x:Static enums:CategoryType.Expense}" />
                             <ComboBoxItem Content="{x:Static enums:CategoryType.Revenue}" />
                         </ComboBox>
+
+                        <Label Grid.Row="1"
+                               Grid.Column="0"
+                               Content="Month:"
+                               VerticalAlignment="Center" />
+                        <DatePicker Grid.Row="1"
+                                   Grid.Column="1"
+                                   SelectedDate="{Binding FilterMonth, StringFormat='MMMM yyyy'}"
+                                   Margin="5"
+                                   IsTodayHighlighted="True">
+                            <DatePicker.Resources>
+                                <Style TargetType="DatePickerTextBox">
+                                    <Setter Property="IsReadOnly" Value="True"/>
+                                    <Setter Property="Control.Template">
+                                        <Setter.Value>
+                                            <ControlTemplate>
+                                                <TextBox Text="{Binding Path=SelectedDate, StringFormat='MMMM yyyy',
+                                                         RelativeSource={RelativeSource AncestorType=DatePicker}}"
+                                                         IsReadOnly="True"/>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </DatePicker.Resources>
+                        </DatePicker>
+
+                        <Label Grid.Row="1"
+                               Grid.Column="2"
+                               Content="Custom Range:"
+                               VerticalAlignment="Center" />
+                        <CheckBox Grid.Row="1"
+                                 Grid.Column="3"
+                                 Content="Use Date Range"
+                                 IsChecked="{Binding UseCustomDateRange}"
+                                 VerticalAlignment="Center"
+                                 Margin="5" />
+
+                        <Label Grid.Row="2"
+                               Grid.Column="0"
+                               Content="From Date:"
+                               VerticalAlignment="Center"
+                               IsEnabled="{Binding UseCustomDateRange}" />
+                        <DatePicker Grid.Row="2"
+                                   Grid.Column="1"
+                                   SelectedDate="{Binding FilterStartDate}"
+                                   IsEnabled="{Binding UseCustomDateRange}"
+                                   Margin="5" />
+
+                        <Label Grid.Row="2"
+                               Grid.Column="2"
+                               Content="To Date:"
+                               VerticalAlignment="Center"
+                               IsEnabled="{Binding UseCustomDateRange}" />
+                        <DatePicker Grid.Row="2"
+                                   Grid.Column="3"
+                                   SelectedDate="{Binding FilterEndDate}"
+                                   IsEnabled="{Binding UseCustomDateRange}"
+                                   Margin="5" />
+
+                        <Label Grid.Row="3"
+                               Grid.Column="0"
+                               Content="Category:"
+                               VerticalAlignment="Center" />
+                        <ComboBox Grid.Row="3"
+                                 Grid.Column="1"
+                                 ItemsSource="{Binding Categories}"
+                                 SelectedItem="{Binding FilterCategory}"
+                                 Margin="5">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding}">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding}" Value="">
+                                                        <Setter Property="Text" Value="All Categories" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
+                        <Button Grid.Row="3"
+                                Grid.Column="2"
+                                Grid.ColumnSpan="2"
+                                Content="Clear Filters"
+                                Command="{Binding ClearFiltersCommand}"
+                                Margin="5" />
                     </Grid>
                 </GroupBox>
             </StackPanel>
