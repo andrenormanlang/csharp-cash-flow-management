@@ -429,7 +429,7 @@ namespace CashFlowManagement.ViewModels
             // Create report view model
             var reportViewModel = new ReportViewModel
             {
-                ReportTitle = $"Financial Report for {selectedMonth:MMMM yyyy}",
+                ReportTitle = selectedMonth.ToString("dd/MM/yyyy"),
                 TotalRevenue = monthlyRevenue,
                 TotalExpenses = monthlyExpenses,
                 NetCashFlow = netFlow
