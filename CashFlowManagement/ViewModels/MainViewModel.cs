@@ -16,6 +16,9 @@ using System.Windows.Input;
 
 namespace CashFlowManagement.ViewModels
 {
+    /// <summary>
+    /// View model for the main window of the application, providing data binding and business logic for the UI.
+    /// </summary>
     public class MainViewModel : INotifyPropertyChanged
     {
         private readonly ITransactionManager _transactionManager;
@@ -39,25 +42,86 @@ namespace CashFlowManagement.ViewModels
         private ITransaction? _selectedTransaction;
         private bool _isEditMode;
 
+        /// <summary>
+        /// Event raised when a property value changes.
+        /// </summary>
         public event PropertyChangedEventHandler? PropertyChanged;
 
         // Collections
+        /// <summary>
+        /// Gets the collection of all transactions.
+        /// </summary>
         public ObservableCollection<ITransaction> Transactions { get; } = new();
+
+        /// <summary>
+        /// Gets the collection of unique category names.
+        /// </summary>
         public ObservableCollection<string> Categories { get; } = new();
+
+        /// <summary>
+        /// Gets the collection of expense categories.
+        /// </summary>
         public ObservableCollection<TransactionCategory> ExpenseCategories { get; }
+
+        /// <summary>
+        /// Gets the collection of revenue categories.
+        /// </summary>
         public ObservableCollection<TransactionCategory> RevenueCategories { get; }
+
+        /// <summary>
+        /// Gets the collection of top expense categories.
+        /// </summary>
         public ObservableCollection<CategorySummary> TopExpenses { get; } = new();
+
+        /// <summary>
+        /// Gets the collection of top revenue categories.
+        /// </summary>
         public ObservableCollection<CategorySummary> TopRevenues { get; } = new();
 
         // Commands
+        /// <summary>
+        /// Gets the command for adding a new transaction.
+        /// </summary>
         public ICommand AddTransactionCommand { get; }
+
+        /// <summary>
+        /// Gets the command for updating an existing transaction.
+        /// </summary>
         public ICommand UpdateTransactionCommand { get; }
+
+        /// <summary>
+        /// Gets the command for deleting a transaction.
+        /// </summary>
         public ICommand DeleteTransactionCommand { get; }
+
+        /// <summary>
+        /// Gets the command for canceling transaction editing.
+        /// </summary>
         public ICommand CancelEditCommand { get; }
+
+        /// <summary>
+        /// Gets the command for saving transactions.
+        /// </summary>
         public ICommand SaveCommand { get; }
+
+        /// <summary>
+        /// Gets the command for loading transactions.
+        /// </summary>
         public ICommand LoadCommand { get; }
+
+        /// <summary>
+        /// Gets the command for generating financial reports.
+        /// </summary>
         public ICommand GenerateReportCommand { get; }
+
+        /// <summary>
+        /// Gets the command for exiting the application.
+        /// </summary>
         public ICommand ExitCommand { get; }
+
+        /// <summary>
+        /// Gets the command for clearing applied filters.
+        /// </summary>
         public ICommand ClearFiltersCommand { get; }
 
         // Properties for Binding
@@ -292,7 +356,11 @@ namespace CashFlowManagement.ViewModels
             }
         }
 
-        // Constructor
+        /// <summary>
+        /// Initializes a new instance of the MainViewModel class.
+        /// </summary>
+        /// <param name="transactionManager">The transaction manager service.</param>
+        /// <param name="dataService">The data persistence service.</param>
         public MainViewModel(ITransactionManager transactionManager, IDataService dataService)
         {
             _transactionManager = transactionManager;
@@ -772,16 +840,34 @@ namespace CashFlowManagement.ViewModels
             CommandManager.InvalidateRequerySuggested();
         }
 
+        /// <summary>
+        /// Represents a summary of a transaction category with amount and percentage information.
+        /// </summary>
+        public class CategorySummary
+        {
+            /// <summary>
+            /// Gets or sets the category name.
+            /// </summary>
+            public string Category { get; set; } = string.Empty;
+
+            /// <summary>
+            /// Gets or sets the total amount for the category.
+            /// </summary>
+            public decimal Amount { get; set; }
+
+            /// <summary>
+            /// Gets or sets the percentage this category represents of the total.
+            /// </summary>
+            public decimal Percentage { get; set; }
+        }
+
+        /// <summary>
+        /// Raises the PropertyChanged event for the specified property.
+        /// </summary>
+        /// <param name="propertyName">The name of the property that changed.</param>
         protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public class CategorySummary
-        {
-            public string Category { get; set; } = string.Empty;
-            public decimal Amount { get; set; }
-            public decimal Percentage { get; set; }
         }
     }
 }

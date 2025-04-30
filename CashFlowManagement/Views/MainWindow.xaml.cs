@@ -5,10 +5,17 @@ using System.Windows;
 
 namespace CashFlowManagement.Views
 {
+    /// <summary>
+    /// Main window of the application providing the user interface for managing financial transactions.
+    /// </summary>
     public partial class MainWindow : Window
     {
         private readonly MainViewModel _viewModel;
 
+        /// <summary>
+        /// Initializes a new instance of the MainWindow class.
+        /// Sets up the data context and initializes required services.
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
@@ -25,6 +32,11 @@ namespace CashFlowManagement.Views
             Loaded += MainWindow_Loaded;
         }
 
+        /// <summary>
+        /// Handles the window loaded event, prompting the user to load previous transactions.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">Event arguments.</param>
         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             var result = MessageBox.Show("Would you like to load previous transactions?",
@@ -48,6 +60,11 @@ namespace CashFlowManagement.Views
             }
         }
 
+        /// <summary>
+        /// Handles the edit menu item click event, enabling edit mode for the selected transaction.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">Event arguments.</param>
         private void EditMenuItem_Click(object sender, RoutedEventArgs e)
         {
             if (DataContext is MainViewModel viewModel)
@@ -56,6 +73,10 @@ namespace CashFlowManagement.Views
             }
         }
 
+        /// <summary>
+        /// Handles the window closing event, prompting the user to save changes before closing.
+        /// </summary>
+        /// <param name="e">Event arguments containing the cancellation option.</param>
         protected override async void OnClosing(CancelEventArgs e)
         {
             var result = MessageBox.Show("Would you like to save your changes?",

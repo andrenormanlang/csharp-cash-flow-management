@@ -9,15 +9,30 @@ using CashFlowManagement.Enums;
 
 namespace CashFlowManagement.Services
 {
+    /// <summary>
+    /// Provides functionality for persisting and retrieving financial transaction data in JSON format.
+    /// Implements IDataService interface.
+    /// </summary>
     public class JsonDataService : IDataService
     {
         private string _dataFile;
 
+        /// <summary>
+        /// Initializes a new instance of the JsonDataService class.
+        /// </summary>
+        /// <param name="dataFile">The name of the JSON file to use for data storage. Defaults to "transactions.json".</param>
         public JsonDataService(string dataFile = "transactions.json")
         {
             _dataFile = dataFile;
         }
 
+        /// <summary>
+        /// Saves a collection of transactions to a JSON file asynchronously.
+        /// Prompts the user to select a save location.
+        /// </summary>
+        /// <param name="transactions">The collection of transactions to save.</param>
+        /// <returns>A task representing the asynchronous save operation.</returns>
+        /// <exception cref="Exception">Thrown when the save operation fails.</exception>
         public async Task SaveTransactionsAsync(IEnumerable<ITransaction> transactions)
         {
             try
@@ -50,6 +65,12 @@ namespace CashFlowManagement.Services
             }
         }
 
+        /// <summary>
+        /// Loads transactions from a JSON file asynchronously.
+        /// Prompts the user to select a file to load.
+        /// </summary>
+        /// <returns>A task containing the loaded collection of transactions.</returns>
+        /// <exception cref="Exception">Thrown when the load operation fails.</exception>
         public async Task<IEnumerable<ITransaction>> LoadTransactionsAsync()
         {
             try
