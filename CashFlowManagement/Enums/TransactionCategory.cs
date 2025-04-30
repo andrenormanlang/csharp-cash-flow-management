@@ -13,7 +13,7 @@
         Freelance = 1,
         Investment = 2,
         Bonus = 3,
-        CSN=4,
+        CSN = 4,
         Other = 5,
 
         // Expense Categories (100+)
