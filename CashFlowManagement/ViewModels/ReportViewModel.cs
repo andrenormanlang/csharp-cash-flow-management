@@ -29,8 +29,11 @@ namespace CashFlowManagement.ViewModels
             get => _reportTitle;
             set
             {
-                _reportTitle = value;
-                OnPropertyChanged();
+                if (_reportTitle != value)
+                {
+                    _reportTitle = value;
+                    OnPropertyChanged();
+                }
             }
         }
 
@@ -42,8 +45,11 @@ namespace CashFlowManagement.ViewModels
             get => _totalRevenue;
             set
             {
-                _totalRevenue = value;
-                OnPropertyChanged();
+                if (_totalRevenue != value)
+                {
+                    _totalRevenue = value;
+                    OnPropertyChanged();
+                }
             }
         }
 
@@ -55,8 +61,11 @@ namespace CashFlowManagement.ViewModels
             get => _totalExpenses;
             set
             {
-                _totalExpenses = value;
-                OnPropertyChanged();
+                if (_totalExpenses != value)
+                {
+                    _totalExpenses = value;
+                    OnPropertyChanged();
+                }
             }
         }
 
@@ -68,8 +77,11 @@ namespace CashFlowManagement.ViewModels
             get => _netCashFlow;
             set
             {
-                _netCashFlow = value;
-                OnPropertyChanged();
+                if (_netCashFlow != value)
+                {
+                    _netCashFlow = value;
+                    OnPropertyChanged();
+                }
             }
         }
 

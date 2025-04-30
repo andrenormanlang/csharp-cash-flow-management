@@ -11,6 +11,10 @@ namespace CashFlowManagement.Converters
     /// </summary>
     public class NetCashFlowColorConverter : IValueConverter
     {
+        private static readonly SolidColorBrush _positiveColor = new(Colors.Green);
+        private static readonly SolidColorBrush _negativeColor = new(Colors.Red);
+        private static readonly SolidColorBrush _neutralColor = new(Colors.Black);
+
         /// <summary>
         /// Converts a decimal value to a SolidColorBrush based on whether the value is positive, negative, or zero.
         /// </summary>
@@ -23,10 +27,10 @@ namespace CashFlowManagement.Converters
         {
             if (value is decimal amount)
             {
-                if (amount > 0) return new SolidColorBrush(Colors.Green);
-                if (amount < 0) return new SolidColorBrush(Colors.Red);
+                if (amount > 0) return _positiveColor;
+                if (amount < 0) return _negativeColor;
             }
-            return new SolidColorBrush(Colors.Black);
+            return _neutralColor;
         }
 
         /// <summary>

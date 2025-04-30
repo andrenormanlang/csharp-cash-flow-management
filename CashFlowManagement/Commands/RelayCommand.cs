@@ -18,7 +18,7 @@ namespace CashFlowManagement.Commands
         /// <param name="canExecute">Optional function that determines if the command can execute.</param>
         public RelayCommand(Action execute, Func<bool>? canExecute = null)
         {
-            _execute = execute;
+            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
             _canExecute = canExecute;
         }
 

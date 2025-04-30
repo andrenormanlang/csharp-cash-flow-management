@@ -36,9 +36,6 @@ namespace CashFlowManagement.ViewModels
         private decimal _monthlyExpenses;
         private decimal _netCashFlow;
         private string _statusMessage = string.Empty;
-        private DateTime? _filterStartDate;
-        private DateTime? _filterEndDate;
-        private bool _useCustomDateRange;
         private ITransaction? _selectedTransaction;
         private bool _isEditMode;
 
@@ -48,80 +45,21 @@ namespace CashFlowManagement.ViewModels
         public event PropertyChangedEventHandler? PropertyChanged;
 
         // Collections
-        /// <summary>
-        /// Gets the collection of all transactions.
-        /// </summary>
         public ObservableCollection<ITransaction> Transactions { get; } = new();
-
-        /// <summary>
-        /// Gets the collection of unique category names.
-        /// </summary>
-        public ObservableCollection<string> Categories { get; } = new();
-
-        /// <summary>
-        /// Gets the collection of expense categories.
-        /// </summary>
         public ObservableCollection<TransactionCategory> ExpenseCategories { get; }
-
-        /// <summary>
-        /// Gets the collection of revenue categories.
-        /// </summary>
         public ObservableCollection<TransactionCategory> RevenueCategories { get; }
-
-        /// <summary>
-        /// Gets the collection of top expense categories.
-        /// </summary>
         public ObservableCollection<CategorySummary> TopExpenses { get; } = new();
-
-        /// <summary>
-        /// Gets the collection of top revenue categories.
-        /// </summary>
         public ObservableCollection<CategorySummary> TopRevenues { get; } = new();
 
         // Commands
-        /// <summary>
-        /// Gets the command for adding a new transaction.
-        /// </summary>
         public ICommand AddTransactionCommand { get; }
-
-        /// <summary>
-        /// Gets the command for updating an existing transaction.
-        /// </summary>
         public ICommand UpdateTransactionCommand { get; }
-
-        /// <summary>
-        /// Gets the command for deleting a transaction.
-        /// </summary>
         public ICommand DeleteTransactionCommand { get; }
-
-        /// <summary>
-        /// Gets the command for canceling transaction editing.
-        /// </summary>
         public ICommand CancelEditCommand { get; }
-
-        /// <summary>
-        /// Gets the command for saving transactions.
-        /// </summary>
         public ICommand SaveCommand { get; }
-
-        /// <summary>
-        /// Gets the command for loading transactions.
-        /// </summary>
         public ICommand LoadCommand { get; }
-
-        /// <summary>
-        /// Gets the command for generating financial reports.
-        /// </summary>
         public ICommand GenerateReportCommand { get; }
-
-        /// <summary>
-        /// Gets the command for exiting the application.
-        /// </summary>
         public ICommand ExitCommand { get; }
-
-        /// <summary>
-        /// Gets the command for clearing applied filters.
-        /// </summary>
         public ICommand ClearFiltersCommand { get; }
 
         // Properties for Binding
@@ -176,7 +114,6 @@ namespace CashFlowManagement.ViewModels
                 {
                     _selectedType = value;
                     OnPropertyChanged();
-                    // Reset the selected category when type changes
                     SelectedTransactionCategory = default;
                 }
             }
@@ -200,12 +137,6 @@ namespace CashFlowManagement.ViewModels
             {
                 _filterMonth = value;
                 OnPropertyChanged();
-                if (value.HasValue)
-                {
-                    // When month is selected, set the date range to cover the entire month
-                    FilterStartDate = new DateTime(value.Value.Year, value.Value.Month, 1);
-                    FilterEndDate = FilterStartDate.Value.AddMonths(1).AddDays(-1);
-                }
                 ApplyFilters();
             }
         }
@@ -229,61 +160,6 @@ namespace CashFlowManagement.ViewModels
                 _filterType = value;
                 OnPropertyChanged();
                 ApplyFilters();
-            }
-        }
-
-        public DateTime? FilterStartDate
-        {
-            get => _filterStartDate;
-            set
-            {
-                _filterStartDate = value;
-                OnPropertyChanged();
-                ApplyFilters();
-            }
-        }
-
-        public DateTime? FilterEndDate
-        {
-            get => _filterEndDate;
-            set
-            {
-                _filterEndDate = value;
-                OnPropertyChanged();
-                ApplyFilters();
-            }
-        }
-
-        public bool UseCustomDateRange
-        {
-            get => _useCustomDateRange;
-            set
-            {
-                _useCustomDateRange = value;
-                OnPropertyChanged();
-
-                if (!value)
-                {
-                    // When switching back to month view, clear custom date range
-                    FilterStartDate = null;
-                    FilterEndDate = null;
-
-                    // Ensure we have a month selected
-                    if (!FilterMonth.HasValue)
-                    {
-                        FilterMonth = DateTime.Today;
-                    }
-                }
-                else
-                {
-                    // When switching to custom range, initialize with current month if no dates set
-                    if (!FilterStartDate.HasValue && FilterMonth.HasValue)
-                    {
-                        FilterStartDate = new DateTime(FilterMonth.Value.Year, FilterMonth.Value.Month, 1);
-                        FilterEndDate = FilterStartDate.Value.AddMonths(1).AddDays(-1);
-                        FilterMonth = null;
-                    }
-                }
             }
         }
 
@@ -335,7 +211,6 @@ namespace CashFlowManagement.ViewModels
                 _selectedTransaction = value;
                 if (value != null)
                 {
-                    // Populate fields with selected transaction data
                     SelectedDate = value.Date;
                     Amount = value.Amount;
                     Description = value.Description;
@@ -427,7 +302,6 @@ namespace CashFlowManagement.ViewModels
             return !IncomeCategories.Contains(category);
         }
 
-
         public async Task LoadDataAsync()
         {
             try
@@ -437,22 +311,13 @@ namespace CashFlowManagement.ViewModels
                 Transactions.Clear();
                 TopExpenses.Clear();
                 TopRevenues.Clear();
-                Categories.Clear();
 
                 foreach (var transaction in transactions)
                 {
                     _transactionManager.AddTransaction(transaction);
                 }
 
-                UpdateCategories();
-
-                // Don't set FilterMonth initially to show all transactions
-                FilterMonth = null;
-                FilterType = null;
-                FilterCategory = string.Empty;
-                SearchText = string.Empty;
-
-                ApplyFilters(); // This will now load all transactions without filtering
+                ApplyFilters();
                 StatusMessage = "Data loaded successfully";
             }
             catch (Exception ex)
@@ -687,13 +552,21 @@ namespace CashFlowManagement.ViewModels
             NetCashFlow = netFlow;
         }
 
+        private void UpdateMonthlyTotals()
+        {
+            if (!FilterMonth.HasValue) return;
+
+            var flow = _transactionManager.CalculateMonthlyFlow(FilterMonth.Value);
+            MonthlyRevenue = flow.revenues;
+            MonthlyExpenses = flow.expenses;
+            NetCashFlow = flow.netCashFlow;
+        }
+
         private void ApplyFilters()
         {
             Transactions.Clear();
-            var allTransactions = _transactionManager.GetTransactions();
-            var filteredTransactions = allTransactions;
+            var filteredTransactions = _transactionManager.GetTransactions();
 
-            // Apply text search
             if (!string.IsNullOrWhiteSpace(SearchText))
             {
                 var search = SearchText.ToLower();
@@ -702,30 +575,24 @@ namespace CashFlowManagement.ViewModels
                     t.Category.Name.ToLower().Contains(search));
             }
 
-            // Apply date range filter
-            if (FilterStartDate.HasValue)
+            if (FilterMonth.HasValue)
             {
+                var monthStart = new DateTime(FilterMonth.Value.Year, FilterMonth.Value.Month, 1);
+                var monthEnd = monthStart.AddMonths(1).AddDays(-1);
                 filteredTransactions = filteredTransactions.Where(t =>
-                    t.Date.Date >= FilterStartDate.Value.Date);
+                    t.Date.Date >= monthStart && t.Date.Date <= monthEnd);
             }
 
-            if (FilterEndDate.HasValue)
-            {
-                filteredTransactions = filteredTransactions.Where(t =>
-                    t.Date.Date <= FilterEndDate.Value.Date);
-            }
-
-            // Apply category filter
             if (!string.IsNullOrWhiteSpace(FilterCategory))
             {
                 filteredTransactions = filteredTransactions.Where(t =>
                     t.Category.Name.Equals(FilterCategory, StringComparison.OrdinalIgnoreCase));
             }
 
-            // Apply type filter only if it's not the "All" option
             if (FilterType.HasValue)
             {
-                filteredTransactions = filteredTransactions.Where(t => t.Category.Type == FilterType.Value);
+                filteredTransactions = filteredTransactions.Where(t =>
+                    t.Category.Type == FilterType.Value);
             }
 
             foreach (var transaction in filteredTransactions)
@@ -733,83 +600,17 @@ namespace CashFlowManagement.ViewModels
                 Transactions.Add(transaction);
             }
 
-            // Update the report based on the current filter date range
-            UpdateFilterRange();
-            // Only update monthly totals without showing the report window
             UpdateMonthlyTotals();
-        }
-
-        private void UpdateMonthlyTotals()
-        {
-            if (!Transactions.Any()) return;
-
-            var selectedMonth = FilterMonth ?? DateTime.Today;
-            var monthStart = new DateTime(selectedMonth.Year, selectedMonth.Month, 1);
-            var monthEnd = monthStart.AddMonths(1).AddDays(-1);
-
-            var monthlyTransactions = Transactions.Where(t =>
-                t.Date >= monthStart && t.Date <= monthEnd).ToList();
-
-            var monthlyRevenue = monthlyTransactions
-                .Where(t => t.Category.Type == CategoryType.Revenue)
-                .Sum(t => t.Amount);
-
-            var monthlyExpenses = monthlyTransactions
-                .Where(t => t.Category.Type == CategoryType.Expense)
-                .Sum(t => t.Amount);
-
-            var netFlow = monthlyRevenue - monthlyExpenses;
-
-            MonthlyRevenue = monthlyRevenue;
-            MonthlyExpenses = monthlyExpenses;
-            NetCashFlow = netFlow;
-        }
-
-        private void UpdateFilterRange()
-        {
-            if (FilterStartDate.HasValue && FilterEndDate.HasValue)
-            {
-                // If date range spans a single month, update FilterMonth
-                var start = FilterStartDate.Value;
-                var end = FilterEndDate.Value;
-
-                if (start.Year == end.Year && start.Month == end.Month)
-                {
-                    if (_filterMonth?.Month != start.Month || _filterMonth?.Year != start.Year)
-                    {
-                        _filterMonth = start;
-                        OnPropertyChanged(nameof(FilterMonth));
-                    }
-                }
-                else
-                {
-                    // If date range spans multiple months, clear FilterMonth display
-                    if (_filterMonth != null)
-                    {
-                        _filterMonth = null;
-                        OnPropertyChanged(nameof(FilterMonth));
-                    }
-                }
-            }
-            else if (!FilterMonth.HasValue)
-            {
-                // If no date range and no month selected, default to current month
-                FilterMonth = DateTime.Today;
-            }
         }
 
         private void ClearFilters()
         {
-            FilterStartDate = null;
-            FilterEndDate = null;
-            FilterMonth = null;
+            FilterMonth = DateTime.Today;
             FilterCategory = string.Empty;
             FilterType = null;
             SearchText = string.Empty;
             StatusMessage = "Filters cleared";
-
-            // Reset to current month for summary
-            FilterMonth = DateTime.Today;
+            ApplyFilters();
         }
 
         private void ClearInputs()
@@ -819,20 +620,6 @@ namespace CashFlowManagement.ViewModels
             SelectedTransactionCategory = default;
             SelectedDate = DateTime.Today;
             IsEditMode = false;
-        }
-
-        private void UpdateCategories()
-        {
-            var categories = _transactionManager.GetTransactions()
-                .Select(t => t.Category.Name)
-                .Distinct()
-                .OrderBy(n => n);
-
-            Categories.Clear();
-            foreach (var category in categories)
-            {
-                Categories.Add(category);
-            }
         }
 
         private void NotifyCanExecuteChanged()

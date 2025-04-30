@@ -11,7 +11,6 @@ namespace CashFlowManagement.Services
     public class TransactionManager : ITransactionManager
     {
         private readonly List<ITransaction> _transactions;
-        private readonly Dictionary<DateTime, List<ITransaction>> _monthlyTransactions;
 
         /// <summary>
         /// Initializes a new instance of the TransactionManager class.
@@ -19,7 +18,6 @@ namespace CashFlowManagement.Services
         public TransactionManager()
         {
             _transactions = new List<ITransaction>();
-            _monthlyTransactions = new Dictionary<DateTime, List<ITransaction>>();
         }
 
         /// <summary>
@@ -29,38 +27,21 @@ namespace CashFlowManagement.Services
         public IEnumerable<ITransaction> GetTransactions() => _transactions;
 
         /// <summary>
-        /// Adds a new transaction to both the main list and monthly organization.
+        /// Adds a new transaction to the main list.
         /// </summary>
         /// <param name="transaction">The transaction to add.</param>
         public void AddTransaction(ITransaction transaction)
         {
             _transactions.Add(transaction);
-
-            var monthKey = new DateTime(transaction.Date.Year, transaction.Date.Month, 1);
-            if (!_monthlyTransactions.ContainsKey(monthKey))
-            {
-                _monthlyTransactions[monthKey] = new List<ITransaction>();
-            }
-            _monthlyTransactions[monthKey].Add(transaction);
         }
 
         /// <summary>
-        /// Deletes a transaction from both the main list and monthly organization.
+        /// Deletes a transaction from the main list.
         /// </summary>
         /// <param name="transaction">The transaction to delete.</param>
         public void DeleteTransaction(ITransaction transaction)
         {
             _transactions.Remove(transaction);
-
-            var monthKey = new DateTime(transaction.Date.Year, transaction.Date.Month, 1);
-            if (_monthlyTransactions.ContainsKey(monthKey))
-            {
-                _monthlyTransactions[monthKey].Remove(transaction);
-                if (!_monthlyTransactions[monthKey].Any())
-                {
-                    _monthlyTransactions.Remove(monthKey);
-                }
-            }
         }
 
         /// <summary>
@@ -70,11 +51,11 @@ namespace CashFlowManagement.Services
         /// <param name="newTransaction">The new transaction information.</param>
         public void UpdateTransaction(ITransaction oldTransaction, ITransaction newTransaction)
         {
-            // Remove old transaction
-            DeleteTransaction(oldTransaction);
-
-            // Add new transaction
-            AddTransaction(newTransaction);
+            var index = _transactions.IndexOf(oldTransaction);
+            if (index != -1)
+            {
+                _transactions[index] = newTransaction;
+            }
         }
 
         /// <summary>
@@ -84,15 +65,17 @@ namespace CashFlowManagement.Services
         /// <returns>A tuple containing (revenues, expenses, netCashFlow).</returns>
         public (decimal revenues, decimal expenses, decimal netCashFlow) CalculateMonthlyFlow(DateTime month)
         {
-            var monthKey = new DateTime(month.Year, month.Month, 1);
-            if (!_monthlyTransactions.ContainsKey(monthKey))
-                return (0, 0, 0);
+            var monthStart = new DateTime(month.Year, month.Month, 1);
+            var monthEnd = monthStart.AddMonths(1).AddDays(-1);
 
-            decimal revenues = _monthlyTransactions[monthKey]
+            var monthlyTransactions = _transactions
+                .Where(t => t.Date >= monthStart && t.Date <= monthEnd);
+
+            decimal revenues = monthlyTransactions
                 .Where(t => t.Category.Type == CategoryType.Revenue)
                 .Sum(t => t.Amount);
 
-            decimal expenses = _monthlyTransactions[monthKey]
+            decimal expenses = monthlyTransactions
                 .Where(t => t.Category.Type == CategoryType.Expense)
                 .Sum(t => t.Amount);
 
@@ -122,14 +105,16 @@ namespace CashFlowManagement.Services
 
             if (month.HasValue)
             {
+                var monthStart = new DateTime(month.Value.Year, month.Value.Month, 1);
+                var monthEnd = monthStart.AddMonths(1).AddDays(-1);
                 query = query.Where(t =>
-                    t.Date.Year == month.Value.Year &&
-                    t.Date.Month == month.Value.Month);
+                    t.Date >= monthStart && t.Date <= monthEnd);
             }
 
             if (!string.IsNullOrWhiteSpace(category))
             {
-                query = query.Where(t => t.Category.Name == category);
+                query = query.Where(t =>
+                    t.Category.Name.Equals(category, StringComparison.OrdinalIgnoreCase));
             }
 
             if (type.HasValue)

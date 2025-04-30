@@ -2,6 +2,7 @@
 using CashFlowManagement.Interfaces;
 using CashFlowManagement.Models;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.IO;
 using Microsoft.Win32;
 using System.Windows;
@@ -9,30 +10,51 @@ using CashFlowManagement.Enums;
 
 namespace CashFlowManagement.Services
 {
-    /// <summary>
-    /// Provides functionality for persisting and retrieving financial transaction data in JSON format.
-    /// Implements IDataService interface.
-    /// </summary>
+    public class TransactionConverter : JsonConverter<ITransaction>
+    {
+        public override ITransaction Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        {
+            using JsonDocument doc = JsonDocument.ParseValue(ref reader);
+            var root = doc.RootElement;
+
+            var transaction = new Transaction
+            {
+                Date = root.GetProperty("Date").GetDateTime(),
+                Amount = root.GetProperty("Amount").GetDecimal(),
+                Description = root.GetProperty("Description").GetString() ?? string.Empty,
+                Category = new Category
+                {
+                    Name = root.GetProperty("Category").GetProperty("Name").GetString() ?? string.Empty,
+                    Type = (CategoryType)root.GetProperty("Category").GetProperty("Type").GetInt32(),
+                    TransactionCategory = (TransactionCategory)root.GetProperty("Category").GetProperty("TransactionCategory").GetInt32()
+                }
+            };
+
+            return transaction;
+        }
+
+        public override void Write(Utf8JsonWriter writer, ITransaction value, JsonSerializerOptions options)
+        {
+            JsonSerializer.Serialize(writer, value, value.GetType(), options);
+        }
+    }
+
     public class JsonDataService : IDataService
     {
         private string _dataFile;
+        private readonly JsonSerializerOptions _jsonOptions;
 
-        /// <summary>
-        /// Initializes a new instance of the JsonDataService class.
-        /// </summary>
-        /// <param name="dataFile">The name of the JSON file to use for data storage. Defaults to "transactions.json".</param>
         public JsonDataService(string dataFile = "transactions.json")
         {
             _dataFile = dataFile;
+            _jsonOptions = new JsonSerializerOptions
+            {
+                WriteIndented = true,
+                PropertyNameCaseInsensitive = true
+            };
+            _jsonOptions.Converters.Add(new TransactionConverter());
         }
 
-        /// <summary>
-        /// Saves a collection of transactions to a JSON file asynchronously.
-        /// Prompts the user to select a save location.
-        /// </summary>
-        /// <param name="transactions">The collection of transactions to save.</param>
-        /// <returns>A task representing the asynchronous save operation.</returns>
-        /// <exception cref="Exception">Thrown when the save operation fails.</exception>
         public async Task SaveTransactionsAsync(IEnumerable<ITransaction> transactions)
         {
             try
@@ -47,13 +69,7 @@ namespace CashFlowManagement.Services
                 if (dialog.ShowDialog() == true)
                 {
                     _dataFile = dialog.FileName;
-                    var options = new JsonSerializerOptions
-                    {
-                        WriteIndented = true,
-                        PropertyNameCaseInsensitive = true
-                    };
-
-                    var json = JsonSerializer.Serialize(transactions.ToList(), options);
+                    var json = JsonSerializer.Serialize(transactions, _jsonOptions);
                     await File.WriteAllTextAsync(_dataFile, json);
                 }
             }
@@ -65,12 +81,6 @@ namespace CashFlowManagement.Services
             }
         }
 
-        /// <summary>
-        /// Loads transactions from a JSON file asynchronously.
-        /// Prompts the user to select a file to load.
-        /// </summary>
-        /// <returns>A task containing the loaded collection of transactions.</returns>
-        /// <exception cref="Exception">Thrown when the load operation fails.</exception>
         public async Task<IEnumerable<ITransaction>> LoadTransactionsAsync()
         {
             try
@@ -92,41 +102,8 @@ namespace CashFlowManagement.Services
                             return Enumerable.Empty<ITransaction>();
                         }
 
-                        var options = new JsonSerializerOptions
-                        {
-                            PropertyNameCaseInsensitive = true
-                        };
-
-                        try
-                        {
-                            var transactions = JsonSerializer.Deserialize<List<Transaction>>(json, options);
-                            return transactions ?? Enumerable.Empty<ITransaction>();
-                        }
-                        catch
-                        {
-                            // Fallback to manual parsing if direct deserialization fails
-                            var jsonDocument = JsonDocument.Parse(json);
-                            var transactions = new List<ITransaction>();
-
-                            foreach (var element in jsonDocument.RootElement.EnumerateArray())
-                            {
-                                var transaction = new Transaction
-                                {
-                                    Date = element.GetProperty("Date").GetDateTime(),
-                                    Amount = element.GetProperty("Amount").GetDecimal(),
-                                    Description = element.GetProperty("Description").GetString() ?? string.Empty,
-                                    Category = new Category
-                                    {
-                                        Name = element.GetProperty("Category").GetProperty("Name").GetString() ?? string.Empty,
-                                        Type = (CategoryType)element.GetProperty("Category").GetProperty("Type").GetInt32(),
-                                        TransactionCategory = (TransactionCategory)element.GetProperty("Category").GetProperty("TransactionCategory").GetInt32()
-                                    }
-                                };
-                                transactions.Add(transaction);
-                            }
-
-                            return transactions;
-                        }
+                        var transactions = JsonSerializer.Deserialize<List<ITransaction>>(json, _jsonOptions);
+                        return transactions ?? Enumerable.Empty<ITransaction>();
                     }
                 }
                 return Enumerable.Empty<ITransaction>();
