@@ -16,6 +16,7 @@
         <Menu DockPanel.Dock="Top"
               Background="WhiteSmoke">
             <MenuItem Header="_File">
+                <MenuItem Header="_New" Command="{Binding NewFileCommand}"/>
                 <MenuItem Header="_Save"
                           Command="{Binding SaveCommand}"
                           InputGestureText="Ctrl+S">

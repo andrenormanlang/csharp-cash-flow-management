@@ -29,7 +29,7 @@ namespace CashFlowManagement.ViewModels
         private TransactionCategory _selectedTransactionCategory;
         private CategoryType _selectedType = CategoryType.Expense;
         private string _searchText = string.Empty;
-        private DateTime? _filterMonth;
+        private DateTime? _filterMonth = DateTime.Today;  // Initialize with current date
         private string _filterCategory = string.Empty;
         private CategoryType? _filterType;
         private decimal _monthlyRevenue;
@@ -61,6 +61,7 @@ namespace CashFlowManagement.ViewModels
         public ICommand GenerateReportCommand { get; }
         public ICommand ExitCommand { get; }
         public ICommand ClearFiltersCommand { get; }
+        public ICommand NewFileCommand { get; }
 
         // Properties for Binding
         public DateTime SelectedDate
@@ -114,7 +115,8 @@ namespace CashFlowManagement.ViewModels
                 {
                     _selectedType = value;
                     OnPropertyChanged();
-                    SelectedTransactionCategory = default;
+                    // Set default category based on type
+                    SelectedTransactionCategory = value == CategoryType.Expense ? TransactionCategory.Miscellaneous : TransactionCategory.Other;
                 }
             }
         }
@@ -246,6 +248,7 @@ namespace CashFlowManagement.ViewModels
             RevenueCategories = new ObservableCollection<TransactionCategory>();
 
             // Initialize commands
+            NewFileCommand = new RelayCommand(NewFile);
             AddTransactionCommand = new RelayCommand(AddTransaction, CanAddTransaction);
             UpdateTransactionCommand = new RelayCommand(UpdateTransaction, CanUpdateTransaction);
             DeleteTransactionCommand = new RelayCommand(DeleteTransaction, CanDeleteTransaction);
@@ -620,6 +623,34 @@ namespace CashFlowManagement.ViewModels
             SelectedTransactionCategory = default;
             SelectedDate = DateTime.Today;
             IsEditMode = false;
+        }
+
+        private void NewFile()
+        {
+            var result = MessageBox.Show(
+                "Are you sure you want to start a new file? Any unsaved changes will be lost.",
+                "New File",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                // Clear all transactions
+                _transactionManager.GetTransactions().ToList().ForEach(t => _transactionManager.DeleteTransaction(t));
+                Transactions.Clear();
+                TopExpenses.Clear();
+                TopRevenues.Clear();
+
+                // Reset filters and inputs
+                ClearFilters();
+                ClearInputs();
+
+                // Reset to current month
+                FilterMonth = DateTime.Today;
+                UpdateMonthlyTotals();
+
+                StatusMessage = "Started new file";
+            }
         }
 
         private void NotifyCanExecuteChanged()

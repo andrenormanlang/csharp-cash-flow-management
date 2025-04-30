@@ -1,322 +1,242 @@
 [
   {
-    "Date": "2025-01-01T00:00:00+01:00",
-    "Amount": 35000,
-    "Description": "salary - January",
+    "Date": "2025-04-02T00:00:00",
+    "Amount": 20,
+    "Description": "Avgift Bank card",
+    "Category": {
+      "Name": "Miscellaneous",
+      "Type": 0,
+      "TransactionCategory": 108
+    }
+  },
+  {
+    "Date": "2025-04-02T00:00:00",
+    "Amount": 70,
+    "Description": "Lidl",
+    "Category": {
+      "Name": "Groceries",
+      "Type": 0,
+      "TransactionCategory": 102
+    }
+  },
+  {
+    "Date": "2025-04-07T00:00:00",
+    "Amount": 219,
+    "Description": "ICA",
     "Category": {
       "Name": "Salary",
-      "Type": 1,
+      "Type": 0,
       "TransactionCategory": 0
     }
   },
   {
-    "Date": "2025-01-02T00:00:00+01:00",
-    "Amount": 12000,
-    "Description": "Monthly rent for apartment in Malm\u00F6",
-    "Category": {
-      "Name": "Rent",
-      "Type": 0,
-      "TransactionCategory": 5
-    }
-  },
-  {
-    "Date": "2025-01-03T00:00:00+01:00",
-    "Amount": 1200,
-    "Description": "Electricity bill - December usage",
-    "Category": {
-      "Name": "Utilities",
-      "Type": 0,
-      "TransactionCategory": 6
-    }
-  },
-  {
-    "Date": "2025-01-05T00:00:00+01:00",
-    "Amount": 800,
-    "Description": "Monthly Sk\u00E5netrafiken card",
+    "Date": "2025-04-08T00:00:00",
+    "Amount": 64,
+    "Description": "Bus",
     "Category": {
       "Name": "Transportation",
       "Type": 0,
-      "TransactionCategory": 7
+      "TransactionCategory": 103
     }
   },
   {
-    "Date": "2025-01-10T00:00:00+01:00",
-    "Amount": 3000,
-    "Description": "Weekly groceries at ICA Maxi",
+    "Date": "2025-04-09T00:00:00",
+    "Amount": 84,
+    "Description": "ICA",
     "Category": {
-      "Name": "Supermarket",
+      "Name": "Groceries",
       "Type": 0,
-      "TransactionCategory": 8
+      "TransactionCategory": 102
     }
   },
   {
-    "Date": "2025-01-15T00:00:00+01:00",
-    "Amount": 2500,
-    "Description": "CSN Study Grant and Loan - January",
-    "Category": {
-      "Name": "CSN",
-      "Type": 1,
-      "TransactionCategory": 2
-    }
-  },
-  {
-    "Date": "2025-01-20T00:00:00+01:00",
-    "Amount": 399,
-    "Description": "Tele2",
-    "Category": {
-      "Name": "Tele2",
-      "Type": 0,
-      "TransactionCategory": 12
-    }
-  },
-  {
-    "Date": "2025-02-01T00:00:00+01:00",
-    "Amount": 35000,
-    "Description": "salary",
-    "Category": {
-      "Name": "Salary",
-      "Type": 1,
-      "TransactionCategory": 0
-    }
-  },
-  {
-    "Date": "2025-02-02T00:00:00+01:00",
-    "Amount": 12000,
-    "Description": "Monthly rent for apartment in Malm\u00F6",
-    "Category": {
-      "Name": "Rent",
-      "Type": 0,
-      "TransactionCategory": 5
-    }
-  },
-  {
-    "Date": "2025-02-05T00:00:00+01:00",
-    "Amount": 1000,
-    "Description": "Monthly Sk\u00E5netrafiken card",
+    "Date": "2025-04-14T00:00:00",
+    "Amount": 64,
+    "Description": "Bus",
     "Category": {
       "Name": "Transportation",
       "Type": 0,
-      "TransactionCategory": 7
+      "TransactionCategory": 103
     }
   },
   {
-    "Date": "2025-02-10T00:00:00+01:00",
-    "Amount": 5000,
-    "Description": "Freelance web development project",
+    "Date": "2025-04-13T00:00:00",
+    "Amount": 35,
+    "Description": "Popcorn Cinema",
     "Category": {
-      "Name": "Freelance",
+      "Name": "Entertainment",
+      "Type": 0,
+      "TransactionCategory": 105
+    }
+  },
+  {
+    "Date": "2025-04-17T00:00:00",
+    "Amount": 150,
+    "Description": "Train-Copenhagen",
+    "Category": {
+      "Name": "Transportation",
+      "Type": 0,
+      "TransactionCategory": 103
+    }
+  },
+  {
+    "Date": "2025-04-22T00:00:00",
+    "Amount": 44,
+    "Description": "Food-IKEA",
+    "Category": {
+      "Name": "Miscellaneous",
+      "Type": 0,
+      "TransactionCategory": 108
+    }
+  },
+  {
+    "Date": "2025-04-23T00:00:00",
+    "Amount": 112,
+    "Description": "ICA",
+    "Category": {
+      "Name": "Groceries",
+      "Type": 0,
+      "TransactionCategory": 102
+    }
+  },
+  {
+    "Date": "2025-04-23T00:00:00",
+    "Amount": 500,
+    "Description": "Swish",
+    "Category": {
+      "Name": "Other",
       "Type": 1,
       "TransactionCategory": 3
     }
   },
   {
-    "Date": "2025-02-15T00:00:00+01:00",
-    "Amount": 2500,
-    "Description": "CSN Study Grant and Loan - February",
+    "Date": "2025-04-24T00:00:00",
+    "Amount": 245,
+    "Description": "ICA",
     "Category": {
-      "Name": "CSN",
-      "Type": 1,
-      "TransactionCategory": 2
-    }
-  },
-  {
-    "Date": "2025-02-20T00:00:00+01:00",
-    "Amount": 2500,
-    "Description": "Spring clothing shopping at Emporia",
-    "Category": {
-      "Name": "Shopping",
+      "Name": "Groceries",
       "Type": 0,
-      "TransactionCategory": 11
+      "TransactionCategory": 102
     }
   },
   {
-    "Date": "2025-03-01T00:00:00+01:00",
-    "Amount": 35000,
-    "Description": "salary",
+    "Date": "2025-04-24T00:00:00",
+    "Amount": 39,
+    "Description": "Loomisp dolc ???",
     "Category": {
-      "Name": "Salary",
-      "Type": 1,
-      "TransactionCategory": 0
-    }
-  },
-  {
-    "Date": "2025-03-02T00:00:00+01:00",
-    "Amount": 12000,
-    "Description": "rent",
-    "Category": {
-      "Name": "Rent",
+      "Name": "Miscellaneous",
       "Type": 0,
-      "TransactionCategory": 5
+      "TransactionCategory": 108
     }
   },
   {
-    "Date": "2025-03-05T00:00:00+01:00",
-    "Amount": 300,
-    "Description": "Sk\u00E5netrafiken Copenhagen",
-    "Category": {
-      "Name": "Transportation",
-      "Type": 0,
-      "TransactionCategory": 7
-    }
-  },
-  {
-    "Date": "2025-03-15T00:00:00+01:00",
-    "Amount": 2500,
+    "Date": "2025-04-25T00:00:00",
+    "Amount": 2396,
     "Description": "CSN",
     "Category": {
-      "Name": "CSN",
+      "Name": "Other",
       "Type": 1,
-      "TransactionCategory": 2
+      "TransactionCategory": 3
     }
   },
   {
-    "Date": "2025-03-20T00:00:00+01:00",
-    "Amount": 500,
-    "Description": "Bastard Burgers",
+    "Date": "2025-04-25T00:00:00",
+    "Amount": 380,
+    "Description": "Sushi",
     "Category": {
-      "Name": "Cafe_Restaurant",
+      "Name": "Miscellaneous",
       "Type": 0,
-      "TransactionCategory": 9
+      "TransactionCategory": 108
     }
   },
   {
-    "Date": "2025-03-25T00:00:00+01:00",
-    "Amount": 3500,
-    "Description": "index funds",
+    "Date": "2025-04-28T00:00:00",
+    "Amount": 154,
+    "Description": "Bolinhos de bacalhau \u0026 Bula",
     "Category": {
-      "Name": "Investment",
-      "Type": 1,
-      "TransactionCategory": 1
-    }
-  },
-  {
-    "Date": "2025-04-01T00:00:00+02:00",
-    "Amount": 35000,
-    "Description": "Monthly salary - April",
-    "Category": {
-      "Name": "Salary",
-      "Type": 1,
-      "TransactionCategory": 0
-    }
-  },
-  {
-    "Date": "2025-04-02T00:00:00+02:00",
-    "Amount": 12000,
-    "Description": "rent",
-    "Category": {
-      "Name": "Rent",
+      "Name": "Miscellaneous",
       "Type": 0,
-      "TransactionCategory": 5
+      "TransactionCategory": 108
     }
   },
   {
-    "Date": "2025-04-05T00:00:00+02:00",
-    "Amount": 400,
-    "Description": "Sk\u00E5netrafiken",
-    "Category": {
-      "Name": "Transportation",
-      "Type": 0,
-      "TransactionCategory": 7
-    }
-  },
-  {
-    "Date": "2025-04-05T00:00:00+02:00",
-    "Amount": 1800,
-    "Description": "UNIQLO",
-    "Category": {
-      "Name": "Shopping",
-      "Type": 0,
-      "TransactionCategory": 11
-    }
-  },
-  {
-    "Date": "2025-04-15T00:00:00+02:00",
-    "Amount": 2500,
-    "Description": "CSN",
-    "Category": {
-      "Name": "CSN",
-      "Type": 1,
-      "TransactionCategory": 2
-    }
-  },
-  {
-    "Date": "2025-04-20T00:00:00+02:00",
-    "Amount": 1500,
-    "Description": "Copenhagen Fun Day",
-    "Category": {
-      "Name": "Travel",
-      "Type": 0,
-      "TransactionCategory": 13
-    }
-  },
-  {
-    "Date": "2025-04-25T00:00:00+02:00",
-    "Amount": 300,
-    "Description": "medication",
-    "Category": {
-      "Name": "Healthcare",
-      "Type": 0,
-      "TransactionCategory": 9
-    }
-  },
-  {
-    "Date": "2025-04-29T00:00:00+02:00",
-    "Amount": 100,
-    "Description": "Bus ticket to Lund",
-    "Category": {
-      "Name": "Transportation",
-      "Type": 0,
-      "TransactionCategory": 7
-    }
-  },
-  {
-    "Date": "2025-04-29T00:00:00+02:00",
-    "Amount": 350,
-    "Description": "Lidl",
-    "Category": {
-      "Name": "Supermarket",
-      "Type": 0,
-      "TransactionCategory": 8
-    }
-  },
-  {
-    "Date": "2025-05-01T00:00:00+02:00",
-    "Amount": 35000,
-    "Description": "",
-    "Category": {
-      "Name": "Salary",
-      "Type": 1,
-      "TransactionCategory": 0
-    }
-  },
-  {
-    "Date": "2025-04-26T00:00:00",
-    "Amount": 150,
-    "Description": "Dinoland with Elvin",
+    "Date": "2025-04-28T00:00:00",
+    "Amount": 170,
+    "Description": "Dinoland Elvin",
     "Category": {
       "Name": "Entertainment",
       "Type": 0,
-      "TransactionCategory": 11
+      "TransactionCategory": 105
     }
   },
   {
-    "Date": "2025-04-29T00:00:00+02:00",
-    "Amount": 300,
-    "Description": "ICA",
+    "Date": "2025-04-28T00:00:00",
+    "Amount": 140,
+    "Description": "Transports A-Kassa",
     "Category": {
-      "Name": "Supermarket",
+      "Name": "Miscellaneous",
       "Type": 0,
-      "TransactionCategory": 8
+      "TransactionCategory": 108
+    }
+  },
+  {
+    "Date": "2025-04-28T00:00:00",
+    "Amount": 171,
+    "Description": "SV Transp ??",
+    "Category": {
+      "Name": "Miscellaneous",
+      "Type": 0,
+      "TransactionCategory": 108
     }
   },
   {
     "Date": "2025-04-30T00:00:00+02:00",
-    "Amount": 200,
-    "Description": "Diapers and trash bags",
+    "Amount": 76,
+    "Description": "Folksam",
     "Category": {
-      "Name": "Supermarket",
+      "Name": "Salary",
       "Type": 0,
-      "TransactionCategory": 8
+      "TransactionCategory": 0
+    }
+  },
+  {
+    "Date": "2025-04-17T00:00:00",
+    "Amount": 304,
+    "Description": " KOEBENHAVN V/25-04-16 ",
+    "Category": {
+      "Name": "Miscellaneous",
+      "Type": 0,
+      "TransactionCategory": 112
+    }
+  },
+  {
+    "Date": "2025-04-01T00:00:00",
+    "Amount": 30000,
+    "Description": "Starting Income",
+    "Category": {
+      "Name": "Other",
+      "Type": 1,
+      "TransactionCategory": 5
+    }
+  },
+  {
+    "Date": "2025-04-02T00:00:00",
+    "Amount": 12000,
+    "Description": "Rent",
+    "Category": {
+      "Name": "Rent",
+      "Type": 0,
+      "TransactionCategory": 100
+    }
+  },
+  {
+    "Date": "2025-04-28T00:00:00",
+    "Amount": 269,
+    "Description": "24 Seven",
+    "Category": {
+      "Name": "PersonalCare",
+      "Type": 0,
+      "TransactionCategory": 111
     }
   }
 ]

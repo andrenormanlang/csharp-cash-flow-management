@@ -10,9 +10,11 @@
     {
         // Revenue Categories (0-99)
         Salary = 0,
-        Investment = 1,
-        Bonus = 2,
-        Other = 3,
+        Freelance = 1,
+        Investment = 2,
+        Bonus = 3,
+        CSN=4,
+        Other = 5,
 
         // Expense Categories (100+)
         Rent = 100,
@@ -23,7 +25,11 @@
         Entertainment = 105,
         Education = 106,
         Shopping = 107,
-        Miscellaneous = 108
+        Travel = 108,
+        DiningOut = 109,
+        Subscriptions = 110,
+        PersonalCare = 111,
+        Miscellaneous = 112,
     }
 }
 
