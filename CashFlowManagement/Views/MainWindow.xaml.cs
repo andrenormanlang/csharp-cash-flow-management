@@ -48,6 +48,14 @@ namespace CashFlowManagement.Views
             }
         }
 
+        private void EditMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is MainViewModel viewModel)
+            {
+                viewModel.IsEditMode = true;
+            }
+        }
+
         protected override async void OnClosing(CancelEventArgs e)
         {
             var result = MessageBox.Show("Would you like to save your changes?",

@@ -298,5 +298,25 @@
       "Type": 0,
       "TransactionCategory": 11
     }
+  },
+  {
+    "Date": "2025-04-29T00:00:00+02:00",
+    "Amount": 300,
+    "Description": "ICA",
+    "Category": {
+      "Name": "Supermarket",
+      "Type": 0,
+      "TransactionCategory": 8
+    }
+  },
+  {
+    "Date": "2025-04-30T00:00:00+02:00",
+    "Amount": 200,
+    "Description": "Diapers and trash bags",
+    "Category": {
+      "Name": "Supermarket",
+      "Type": 0,
+      "TransactionCategory": 8
+    }
   }
 ]

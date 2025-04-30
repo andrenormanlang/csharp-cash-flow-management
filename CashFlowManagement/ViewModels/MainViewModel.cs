@@ -36,6 +36,8 @@ namespace CashFlowManagement.ViewModels
         private DateTime? _filterStartDate;
         private DateTime? _filterEndDate;
         private bool _useCustomDateRange;
+        private ITransaction? _selectedTransaction;
+        private bool _isEditMode;
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -49,6 +51,9 @@ namespace CashFlowManagement.ViewModels
 
         // Commands
         public ICommand AddTransactionCommand { get; }
+        public ICommand UpdateTransactionCommand { get; }
+        public ICommand DeleteTransactionCommand { get; }
+        public ICommand CancelEditCommand { get; }
         public ICommand SaveCommand { get; }
         public ICommand LoadCommand { get; }
         public ICommand GenerateReportCommand { get; }
@@ -258,6 +263,35 @@ namespace CashFlowManagement.ViewModels
             }
         }
 
+        public ITransaction? SelectedTransaction
+        {
+            get => _selectedTransaction;
+            set
+            {
+                _selectedTransaction = value;
+                if (value != null)
+                {
+                    // Populate fields with selected transaction data
+                    SelectedDate = value.Date;
+                    Amount = value.Amount;
+                    Description = value.Description;
+                    SelectedType = value.Category.Type;
+                    SelectedTransactionCategory = value.Category.TransactionCategory;
+                }
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsEditMode
+        {
+            get => _isEditMode;
+            set
+            {
+                _isEditMode = value;
+                OnPropertyChanged();
+            }
+        }
+
         // Constructor
         public MainViewModel(ITransactionManager transactionManager, IDataService dataService)
         {
@@ -270,6 +304,9 @@ namespace CashFlowManagement.ViewModels
 
             // Initialize commands
             AddTransactionCommand = new RelayCommand(AddTransaction, CanAddTransaction);
+            UpdateTransactionCommand = new RelayCommand(UpdateTransaction, CanUpdateTransaction);
+            DeleteTransactionCommand = new RelayCommand(DeleteTransaction, CanDeleteTransaction);
+            CancelEditCommand = new RelayCommand(CancelEdit);
             SaveCommand = new RelayCommand(async () => await SaveDataAsync());
             LoadCommand = new RelayCommand(async () => await LoadDataAsync());
             GenerateReportCommand = new RelayCommand(GenerateReport);
@@ -387,11 +424,18 @@ namespace CashFlowManagement.ViewModels
                     }
                 };
 
-                _transactionManager.AddTransaction(transaction);
-                Transactions.Add(transaction);
-                ClearInputs();
-                GenerateReport();
-                StatusMessage = "Transaction added successfully";
+                if (IsEditMode)
+                {
+                    UpdateTransaction();
+                }
+                else
+                {
+                    _transactionManager.AddTransaction(transaction);
+                    Transactions.Add(transaction);
+                    ClearInputs();
+                    UpdateMonthlyTotals();
+                    StatusMessage = "Transaction added successfully";
+                }
             }
             catch (Exception ex)
             {
@@ -402,6 +446,91 @@ namespace CashFlowManagement.ViewModels
         private bool CanAddTransaction()
         {
             return Amount > 0;
+        }
+
+        private void UpdateTransaction()
+        {
+            if (SelectedTransaction == null) return;
+
+            try
+            {
+                var newTransaction = new Transaction
+                {
+                    Date = SelectedDate,
+                    Amount = Amount,
+                    Description = Description,
+                    Category = new Category
+                    {
+                        Name = SelectedTransactionCategory.ToString(),
+                        Type = SelectedType,
+                        TransactionCategory = SelectedTransactionCategory
+                    }
+                };
+
+                _transactionManager.UpdateTransaction(SelectedTransaction, newTransaction);
+
+                // Update the observable collection
+                var index = Transactions.IndexOf(SelectedTransaction);
+                if (index != -1)
+                {
+                    Transactions[index] = newTransaction;
+                }
+
+                IsEditMode = false;
+                ClearInputs();
+                SelectedTransaction = null;
+                UpdateMonthlyTotals();
+                StatusMessage = "Transaction updated successfully";
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = $"Error updating transaction: {ex.Message}";
+            }
+        }
+
+        private void DeleteTransaction()
+        {
+            if (SelectedTransaction == null) return;
+
+            var result = MessageBox.Show(
+                "Are you sure you want to delete this transaction?",
+                "Confirm Delete",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    _transactionManager.DeleteTransaction(SelectedTransaction);
+                    Transactions.Remove(SelectedTransaction);
+                    ClearInputs();
+                    SelectedTransaction = null;
+                    UpdateMonthlyTotals();
+                    StatusMessage = "Transaction deleted successfully";
+                }
+                catch (Exception ex)
+                {
+                    StatusMessage = $"Error deleting transaction: {ex.Message}";
+                }
+            }
+        }
+
+        private void CancelEdit()
+        {
+            IsEditMode = false;
+            SelectedTransaction = null;
+            ClearInputs();
+        }
+
+        private bool CanUpdateTransaction()
+        {
+            return IsEditMode && SelectedTransaction != null && Amount > 0;
+        }
+
+        private bool CanDeleteTransaction()
+        {
+            return SelectedTransaction != null;
         }
 
         private void GenerateReport()
@@ -621,6 +750,7 @@ namespace CashFlowManagement.ViewModels
             Description = string.Empty;
             SelectedTransactionCategory = default;
             SelectedDate = DateTime.Today;
+            IsEditMode = false;
         }
 
         private void UpdateCategories()

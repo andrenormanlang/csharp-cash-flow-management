@@ -29,6 +29,30 @@ namespace CashFlowManagement.Services
             _monthlyTransactions[monthKey].Add(transaction);
         }
 
+        public void DeleteTransaction(ITransaction transaction)
+        {
+            _transactions.Remove(transaction);
+
+            var monthKey = new DateTime(transaction.Date.Year, transaction.Date.Month, 1);
+            if (_monthlyTransactions.ContainsKey(monthKey))
+            {
+                _monthlyTransactions[monthKey].Remove(transaction);
+                if (!_monthlyTransactions[monthKey].Any())
+                {
+                    _monthlyTransactions.Remove(monthKey);
+                }
+            }
+        }
+
+        public void UpdateTransaction(ITransaction oldTransaction, ITransaction newTransaction)
+        {
+            // Remove old transaction
+            DeleteTransaction(oldTransaction);
+
+            // Add new transaction
+            AddTransaction(newTransaction);
+        }
+
         public (decimal revenues, decimal expenses, decimal netCashFlow) CalculateMonthlyFlow(DateTime month)
         {
             var monthKey = new DateTime(month.Year, month.Month, 1);
